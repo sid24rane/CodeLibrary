@@ -1,6 +1,6 @@
-
-
-https://www.codechef.com/problems/TWSTR - trie problem
+import javax.swing.text.html.HTMLDocument;
+import java.util.Iterator;
+import java.util.LinkedList;https://www.codechef.com/problems/TWSTR - trie problem
 
 // taking input in the form 
 // Input:
@@ -28,7 +28,8 @@ for(int j=0;j<ins.length;j++){
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
- 
+import java.util.Stack;
+
 class Codechef {
 
     public static void main(String[] args) throws NumberFormatException, IOException {
@@ -230,8 +231,189 @@ private static int[][] StrassenMultiply(int[][] A, int[][] B) {
         for(int i1 = 0, i2 = iB; i1 < C.length; i1++, i2++)
             for(int j1 = 0, j2 = jB; j1 < C.length; j1++, j2++)
                 P[i2][j2] = C[i1][j1];
-    } 
+    }
 
+    // max of 2 numbers
+    public static int max(int x, int y) {
+        return (x>y)? x:y;
+    }
+
+    // min of 2 numbers
+    public static int min(int x, int y) {
+        return (x<y)? x:y;
+    }
+
+
+
+
+class Graph{
+
+    private int vertices;
+    private LinkedList<Integer> adj[];
+    private boolean[] visited = new boolean[vertices];
+
+    Graph(int vertices){
+        this.vertices = vertices;
+        adj = new LinkedList[vertices];
+        for (int i=0;i<vertices;++i){
+            adj[i] = new LinkedList<>();
+        }
+    }
+
+    void addEdge(int from,int to){
+        adj[from].add(to);
+    }
+
+
+    // iterative DFS
+    // complexity : O(V+E)
+    void DFS(int vertex){
+
+        Stack<Integer> stack = new Stack<>();
+
+        stack.push(vertex);
+
+        while (!stack.isEmpty()){
+
+            vertex = stack.peek();
+
+            stack.pop();
+
+            // Stack may contain same vertex twice. So
+            // we need to print the popped item only
+            // if it is not visited.
+            if(!visited[vertex])
+            {
+                System.out.print(vertex + " ");
+                visited[vertex]=true;
+            }
+
+            Iterator<Integer> itr = adj[vertex].listIterator();
+
+            while (itr.hasNext())
+            {
+                int v = itr.next();
+                if(!visited[v])
+                    stack.push(v);
+            }
+        }
+
+    }
+
+
+    // iterative BFS
+    // complexity : O(V+E)
+    void BFS(int vertex){
+
+        LinkedList<Integer> queue = new LinkedList<>();
+
+        visited[vertex]=true;
+
+        queue.add(vertex);
+
+        while (queue.size() !=0){
+
+            vertex = queue.poll();
+
+            // print vertex
+
+            Iterator<Integer> itr = adj[vertex].listIterator();
+
+            while (itr.hasNext()){
+                int n = itr.next();
+                if (!visited[n]){
+                    visited[n]=true;
+                    queue.add(n);
+                }
+            }
+        }
+    }
+
+
+    // recursive DFS
+    // complexity: O(V+E)
+    void DFS(int vertex){
+
+        visited[vertex] = true;
+
+        // print vertex
+
+        Iterator<Integer> i = adj[vertex].listIterator();
+        while (i.hasNext()){
+            int n = i.next();
+            if(!visited[n]){
+                DFSUtil(n,visited);
+            }
+        }
+    }
+
+    // recursive BFS
+    // complexity : O(V+E)
+    void BFS(int vertex){
+
+        LinkedList<Integer> queue = new LinkedList<>();
+
+        visited[vertex] = true;
+
+        queue.add(vertex);
+
+        while (queue.size()!=0){
+            s = queue.poll();
+
+            // print vertex
+
+            Iterator<Integer> i = adj[s].listIterator();
+            while (i.hasNext()){
+                int n = i.next();
+                if (!visited[n]){
+                    BFS(vertex);
+                }
+            }
+        }
+
+    }
+
+
+    // finding connected components - DFS
+    int connectedComponents(int vertices){
+        int count = 0;
+        for (int i=0;i<vertices;++i){
+            if (visited[i] == false){
+                count++;
+                DFS(i);
+            }
+        }
+        return count;
+    }
+
+    // finding connected components - BFS
+    int connectedComponents(int vertices){
+        int count = 0;
+        for (int i=0;i<vertices;++i){
+            if (visited[i] == false){
+                count++;
+                BFS(i);
+            }
+        }
+        return count;
+    }
+
+
+
+}
+
+Graph g = new Graph(4);
+g.addEdge(0,1);
+g.addEdge(1, 2);
+g.addEdge(2, 0);
+g.addEdge(2, 3);
+g.addEdge(3, 3);
+g.DFS(2);
+
+
+// djikstra
+// floyd warshall
+// bellman ford
 
 // Karatsuba Multiplication
 // Naive approach takes - O(n2)

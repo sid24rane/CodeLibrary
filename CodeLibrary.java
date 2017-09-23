@@ -79,6 +79,99 @@ public static void display2d(int[][] newarr){
     return -1;
  }
 
+
+
+// Naive substring search
+// O(mn)
+ public  static void naiveSearch(String text,String pattern){
+
+        int tlen = text.length();
+        int plen = pattern.length();
+        boolean isfound = false;
+
+        for (int i=0;i<=tlen-plen;i++){
+
+            int j;
+
+            for (j=0;j<plen-1;j++){
+
+                Character t = text.charAt(i+j);
+                Character og = pattern.charAt(j);
+                if (!(t.equals(og))){
+                    break;
+                }
+            }
+            if (j == plen-1) {
+                isfound=true;
+                System.out.println(i);
+            }
+        }
+        if (!isfound){
+            System.out.println(-1);
+        }
+ }
+
+// Rabin Karp String Algo
+// Complexity: O(m+n) worse => O(mn)
+// i/p => pattern,text,primeNo
+// o/p =>  prints -> index of occurance
+ static void rabinKarp(String pat, String txt,int q)
+    {
+        int d = 256;
+        boolean isFound = false;
+
+        int plen = pat.length();
+        int tlen = txt.length();
+        int phash = 0; // hash value for pattern
+        int thash = 0; // hash value for txt
+        int hash = 1;
+
+        for (int i = 0; i < plen-1; i++)
+            hash = (hash*d)%q;
+
+
+        for (int i = 0; i < plen; i++)
+        {
+            phash = (d*phash + pat.charAt(i))%q;
+            thash = (d*thash + txt.charAt(i))%q;
+        }
+
+        // Slide the pattern over text one by one
+        for (int i = 0; i <= tlen - plen; i++)
+        {
+
+            if ( phash == thash )
+            {
+                int j;
+                /* Check for characters one by one */
+                for ( j = 0; j < plen; j++)
+                {
+                    if (txt.charAt(i+j) != pat.charAt(j))
+                        break;
+                }
+
+                if (j == plen) {
+                    isFound = true;
+                    System.out.println(i);
+                }
+            }
+
+
+            if ( i < tlen-plen )
+            {
+            	// remove leading char , add trailing one , 
+                thash = (d*(thash - txt.charAt(i)*hash) + txt.charAt(i+plen))%q;
+
+                if (thash < 0)
+                    thash = (thash + q);
+            }
+        }
+        if (!isFound){
+            System.out.println(-1);
+        }
+ }
+
+
  // binary search
  // success - returns index
  // fail - returns -1
@@ -264,6 +357,29 @@ class Graph{
         adj[from].add(to);
     }
 
+    // -------------- pattern searching ----------
+
+
+    // abcd
+    // cd
+
+    void naiveSearch(String text,String pattern){
+
+        int tlen = text.length();
+        int plen = text.length();
+
+        for (int i=0;i<=tlen-plen;i++){
+
+            for (int j=0;j<plen;j++){
+                if (!text.charAt(i+j).equals(pattern.charAt(j)))
+                    break;
+            }
+
+            System.out.println(i);
+        }
+    }
+
+    void
 
     // iterative DFS
     // complexity : O(V+E)

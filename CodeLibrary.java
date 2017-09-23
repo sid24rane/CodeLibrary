@@ -1,70 +1,3 @@
-import javax.swing.text.html.HTMLDocument;
-import java.util.Iterator;
-import java.util.LinkedList;https://www.codechef.com/problems/TWSTR - trie problem
-
-// taking input in the form 
-// Input:
-// 3
-// 1 2 3
-// 5 5 6
-
-int tasks = Integer.parseInt(br.readLine());
-int[] x = new int[tasks];
-int[] y = new int[tasks];
-            
-String[] in = br.readLine().split(" ");
-for(int i=0;i<in.length;i++){
-    x[i]=Integer.parseInt(in[i]);
-}
-            
-String[] ins = br.readLine().split(" ");
-for(int j=0;j<ins.length;j++){
-    y[j]=Integer.parseInt(ins[j]);
-}
-
-
-// template
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Stack;
-
-class Codechef {
-
-    public static void main(String[] args) throws NumberFormatException, IOException {
-        
- 
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int T = Integer.parseInt(br.readLine());
- 
-        for (int I = 1; I <= T; I++) {
-            
-      }
-                
-    } 
-}
-
-
-// helper method to print array elements
-public static void display(int[] newarr) {
-        int len = newarr.length;
-        for (int i = 0; i < len; i++) {
-            System.out.println(newarr[i]);
-        }
-}
- 
-// helper method to print 2d array elements 
-public static void display2d(int[][] newarr){
-         int len = newarr.length;
-         for(int i=0;i<len;i++){
-                for(int j=0;j<len;j++){
-                    System.out.print(newarr[i][j] + " ");
-                }
-                System.out.println("\n");
-            }
-}    
-  
  // Linear search
  // success - returns index
  // fail - returns -1
@@ -80,6 +13,126 @@ public static void display2d(int[][] newarr){
  }
 
 
+// Trie
+// Complexity: O(N) where n=length of string
+// 
+class Trie{
+
+    TrieNode root = new TrieNode();
+
+    class TrieNode{
+        HashMap<Character,TrieNode> children;
+        boolean isEnd;
+
+        TrieNode(){
+            children = new HashMap<>();
+            isEnd = false;
+        }
+    }
+
+    public void insert(String str){
+        TrieNode current = root;
+        int len = str.length();
+        for (int i=0;i<len;i++){
+            Character c = str.charAt(i);
+            TrieNode node = current.children.get(c);
+            if (node==null){
+                node = new TrieNode();
+                current.children.put(c,node);
+            }
+            current=node;
+        }
+        current.isEnd = true;
+    }
+
+    public boolean search(String str){
+        TrieNode current = root;
+        int len = str.length();
+        for (int i=0;i<len;i++){
+            Character c = str.charAt(i);
+            TrieNode node = current.children.get(c);
+            if (node == null){
+                return false;
+            }else{
+                current = node;
+            }
+        }
+        return true;
+    }
+
+}
+
+
+// Disjoint Set with unionbyRank n pathCompression
+// makeSet(int data) => makes an empty set and sets rank,parent to itself
+// unionSet(int a,int b)
+// findSet(int a)
+
+
+//Complexity => o(m)
+//where m=no of operations
+
+class DisjointSet{
+    
+    class Node{
+
+        int rank;
+        int data;
+        Node parent;
+
+    }
+    
+    HashMap<Integer,Node> set = new HashMap<>();
+
+    public void makeSet(int data){
+        Node n = new Node();
+        n.data = data;
+        n.rank=0;
+        n.parent=n;
+        set.put(data,n);
+    }
+
+    public boolean unionSet(int a,int b){
+
+        Node node1 = set.get(a);
+        Node node2 = set.get(b);
+
+        Node parent1 = find(node1);
+        Node parent2 = find(node2);
+
+        // for case (1,1)
+        if (parent1.data == parent2.data){
+            return false;
+        }
+
+        // if parent1 == parent2 => parent1++ n make it as parent
+        if (parent1.rank == parent2.rank){
+            parent1.rank++;
+            parent2.parent = parent1;
+        }
+
+        if (parent1.rank > parent2.rank){
+            parent2.parent = parent1;
+        }else{
+            parent1.parent = parent2;
+        }
+
+        return  true;
+    }
+
+    Node findSet(int data){
+        return find(set.get(data));
+    }
+
+    Node find(Node node){
+        Node parent = node.parent;
+        if (parent == node){
+            return parent;
+        }
+        node.parent = find(parent);
+        return node.parent;
+    }
+}
 
 // Naive substring search
 // O(mn)

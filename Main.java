@@ -18,6 +18,7 @@ public class Main {
             String str = in.readString();
             out.printLine(str);
         }
+        out.printLine(34,45,11);
 
         out.flush();
         out.close();
@@ -156,6 +157,14 @@ public class Main {
             return array;
         }
 
+        public static char[] readCharArray(InputReader in, int size) {
+            char[] array = new char[size];
+            for (int i = 0; i < size; i++) {
+                array[i] = in.readCharacter();
+            }
+            return array;
+        }
+
 
     }
 
@@ -192,6 +201,8 @@ public class Main {
         }
     }
 
+
+
     static class ArrayUtils {
 
 
@@ -214,6 +225,12 @@ public class Main {
             }
         }
 
+    }
+
+    static class MiscUtils {
+        // mod7
+        // usage: out.printline(n % MiscUtils.MOD7)
+        public static final int MOD7 = (int) (1e9 + 7);
     }
 
 }

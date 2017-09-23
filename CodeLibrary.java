@@ -13,9 +13,10 @@
  }
 
 
+
 // Trie
 // Complexity: O(N) where n=length of string
-// 
+// for both insert n search
 class Trie{
 
     TrieNode root = new TrieNode();
@@ -67,8 +68,6 @@ class Trie{
 // makeSet(int data) => makes an empty set and sets rank,parent to itself
 // unionSet(int a,int b)
 // findSet(int a)
-
-
 //Complexity => o(m)
 //where m=no of operations
 
@@ -133,6 +132,68 @@ class DisjointSet{
         return node.parent;
     }
 }
+
+// kMP substring search
+// O(m+n) where m=pattern,n= length of text
+
+  public static boolean kmpSearch(String text,String pattern) {
+
+        int[] lps = lpsArray(pattern);
+        int tlen = text.length();
+        int plen = pattern.length();
+        int i = 0;
+        int j = 0;
+
+        while (i < tlen && j < plen) {
+            Character og = text.charAt(i);
+            Character c = pattern.charAt(j);
+
+            if (og.equals(c)) {
+                i++;
+                j++;
+            } else {
+                if (j != 0) {
+                    j = lps[j - 1];
+                } else {
+                    i++;
+                }
+            }
+        }
+        if (j == plen) {
+            return true;
+        }
+        return false;
+ }
+
+// helper method for kmp
+// calculates longest suffix which is also a prefix
+  public static int[] lpsArray(String pattern){
+
+        int plen = pattern.length();
+        int[] arr = new int[plen];
+        arr[0]=0;
+        int j=0;
+        for (int i=1;i<plen;i++){
+            Character at_i = pattern.charAt(i);
+            Character at_j = pattern.charAt(j);
+            if (at_i.equals(at_j)){
+                arr[i]=j+1;
+                i++;
+                j++;
+            }else{
+                if (j!=0){
+                     j=arr[j-1];
+                }else{
+                    arr[i]=0;
+                    i++;
+                }
+            }
+        }
+
+        return arr;
+    }
+
+  
 
 // Naive substring search
 // O(mn)

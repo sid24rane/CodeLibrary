@@ -1,3 +1,13 @@
+
+// filling hashmap with chars from a-z/A-Z    
+int count =1;
+        HashMap<Character,Integer> chars = new HashMap<>();
+        for (char i='a';i<='z';++i){
+            chars.put(i,count);
+            count++;
+}
+
+
  // Linear search
  // success - returns index
  // fail - returns -1
